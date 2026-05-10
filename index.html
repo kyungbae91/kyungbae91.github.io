@@ -1,1 +1,512 @@
-hi
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>모바일 청첩장</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Serif KR', serif;
+      background: #f7f4f0;
+      color: #333;
+      line-height: 1.8;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      background: white;
+      min-height: 100vh;
+      box-shadow: 0 0 20px rgba(0,0,0,0.08);
+    }
+
+    .hero {
+      position: relative;
+      height: 520px;
+      background: url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1200&auto=format&fit=crop') center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      font-weight: 500;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .hero p {
+      font-size: 1rem;
+    }
+
+    section {
+      padding: 50px 28px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 1.7rem;
+      margin-bottom: 24px;
+      color: #8d6e63;
+    }
+
+    .message {
+      font-size: 1rem;
+      color: #555;
+      white-space: pre-line;
+    }
+
+    .couple {
+      background: #faf7f3;
+    }
+
+    .couple-name {
+      font-size: 1.5rem;
+      margin-bottom: 14px;
+    }
+
+    .date-box {
+      background: #fff7f0;
+      border-radius: 18px;
+      padding: 24px;
+      margin-top: 20px;
+      border: 1px solid #f0ddd1;
+    }
+
+    .date-box h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      color: #7b5e57;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 25px;
+    }
+
+    .gallery img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 14px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.02);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.92);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 16px;
+      animation: zoomIn 0.25s ease;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 28px;
+      color: white;
+      font-size: 2.5rem;
+      cursor: pointer;
+      font-weight: 300;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .map-wrap {
+      margin-top: 24px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid #eaded5;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    }
+
+    .map-title {
+      background: #fff7f0;
+      padding: 14px;
+      font-size: 0.95rem;
+      color: #6d4c41;
+      border-bottom: 1px solid #f0ddd1;
+    }
+
+    .map-wrap iframe {
+      width: 100%;
+      height: 320px;
+      border: 0;
+      display: block;
+    }
+
+    .account-section {
+      background: #faf7f3;
+      padding: 50px 24px;
+      text-align: center;
+    }
+
+    .account-box {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      margin-top: 18px;
+      border: 1px solid #eee2d8;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    }
+
+    .account-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #6d4c41;
+      margin-bottom: 8px;
+    }
+
+    .account-number {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 14px;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      border: none;
+      background: #8d6e63;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .rsvp-section {
+      padding: 50px 24px;
+      background: white;
+      text-align: center;
+    }
+
+    .rsvp-form {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .rsvp-form input,
+    .rsvp-form select,
+    .rsvp-form textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid #e0d6cf;
+      font-family: inherit;
+      font-size: 1rem;
+      background: #faf8f6;
+    }
+
+    .rsvp-form textarea {
+      min-height: 100px;
+      resize: none;
+    }
+
+    .submit-btn {
+      margin-top: 10px;
+      border: none;
+      background: #8d6e63;
+      color: white;
+      padding: 15px;
+      border-radius: 999px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .music-btn {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      background: #8d6e63;
+      color: white;
+      font-size: 1.4rem;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 9999;
+    }
+
+    .footer {
+      padding: 40px 20px 60px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #777;
+      background: #faf7f3;
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        height: 460px;
+      }
+
+      .hero h1 {
+        font-size: 2.1rem;
+      }
+
+      section {
+        padding: 40px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <audio id="bgm" loop playsinline>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=wedding-110624.mp3" type="audio/mpeg">
+  </audio>
+  <div class="container">
+
+    <section class="hero">
+      <div class="hero-content">
+        <p>Wedding Invitation</p>
+        <h1>경배 ♥ 슬기</h1>
+        <p>2026년 8월 30일 일요일 오후 3시</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="title">소중한 분들을 초대합니다</h2>
+      <p class="message">
+서로를 아끼며 사랑으로 살아가겠습니다.
+저희 두 사람이 새로운 시작을 함께하는 날,
+귀한 걸음으로 축복해 주시면 감사하겠습니다.
+      </p>
+    </section>
+
+    <section class="couple">
+      <h2 class="title">신랑 & 신부</h2>
+
+      <div class="couple-name">
+        박경배 &nbsp; ♥ &nbsp; 이슬기
+      </div>
+
+      <p>
+        신랑 김철수 · 박영희의 장남 경배<br>
+        신부 이영수 · 최수진의 장녀 슬기
+      </p>
+    </section>
+
+    <section>
+      <h2 class="title">예식 안내</h2>
+
+      <div class="date-box">
+        <h3>2026. 08. 30 일요일 오후 3:00</h3>
+        <p>
+          북서울 꿈의숲 (창녕위궁재사)<br>
+          서울 강북구 번동 90
+        </p>
+      </div>
+
+      <div class="map-wrap">
+        <div class="map-title">
+          📍 북서울 꿈의숲 (창녕위궁재사) 오시는 길
+        </div>
+
+        <iframe 
+          src="https://map.kakao.com/link/map/북서울꿈의숲,37.620442,127.041694"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="title">Gallery</h2>
+
+      <div class="gallery">
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop" alt="웨딩사진" onclick="openModal(this.src)">
+        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800&auto=format&fit=crop" alt="웨딩사진" onclick="openModal(this.src)">
+        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop" alt="웨딩사진" onclick="openModal(this.src)">
+        <img src="https://images.unsplash.com/photo-1525258946800-98cfd641d0de?q=80&w=800&auto=format&fit=crop" alt="웨딩사진" onclick="openModal(this.src)">
+        <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?q=80&w=800&auto=format&fit=crop" alt="웨딩사진" onclick="openModal(this.src)">
+        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=800&auto=format&fit=crop" alt="웨딩사진" onclick="openModal(this.src)">
+        <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=800&auto=format&fit=crop" alt="웨딩사진" onclick="openModal(this.src)">
+        <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=800&auto=format&fit=crop" alt="웨딩사진" onclick="openModal(this.src)">
+        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800&auto=format&fit=crop" alt="웨딩사진" onclick="openModal(this.src)">
+      </div>
+    </section>
+
+    <div id="photoModal" class="modal" onclick="closeModal()">
+      <span class="close">×</span>
+      <img class="modal-content" id="modalImage">
+    </div>
+
+    <section class="rsvp-section">
+      <h2 class="title">참석 여부 전달</h2>
+
+      <form class="rsvp-form" onsubmit="submitRSVP(event)">
+        <input type="text" id="guestName" placeholder="성함을 입력해주세요" required>
+
+        <select id="attendance" required>
+          <option value="">참석 여부를 선택해주세요</option>
+          <option value="참석">참석</option>
+          <option value="불참">불참</option>
+        </select>
+
+        <input type="number" id="guestCount" min="1" placeholder="참석 인원을 입력해주세요" required>
+
+        
+
+        <button type="submit" class="submit-btn">
+          참석 여부 전달하기
+        </button>
+      </form>
+    </section>
+
+    <section class="account-section">
+      <h2 class="title">마음 전하실 곳</h2>
+
+      <div class="account-box">
+        <div class="account-name">신랑 박경배</div>
+        <div class="account-number" id="groomAccount">
+          국민은행 123456-78-123456
+        </div>
+        <button class="copy-btn" onclick="copyAccount('groomAccount')">
+          계좌번호 복사
+        </button>
+      </div>
+
+      <div class="account-box">
+        <div class="account-name">신부 이슬기</div>
+        <div class="account-number" id="brideAccount">
+          신한은행 110-123-456789
+        </div>
+        <button class="copy-btn" onclick="copyAccount('brideAccount')">
+          계좌번호 복사
+        </button>
+      </div>
+    </section>
+
+    <button class="music-btn" onclick="toggleMusic()">
+      ♪
+    </button>
+
+    <div class="footer">
+      <p>
+        저희의 새로운 시작을 함께 축복해주세요 ♥
+      </p>
+    </div>
+
+  </div>
+  <script>
+    window.addEventListener('load', () => {
+      const bgm = document.getElementById('bgm');
+
+      document.body.addEventListener('click', () => {
+        if (bgm.paused) {
+          bgm.play();
+        }
+      }, { once: true });
+    });
+
+    function toggleMusic() {
+      const bgm = document.getElementById('bgm');
+
+      if (bgm.paused) {
+        bgm.play();
+      } else {
+        bgm.pause();
+      }
+    }
+
+    function openModal(src) {
+      const modal = document.getElementById('photoModal');
+      const modalImage = document.getElementById('modalImage');
+
+      modal.style.display = 'flex';
+      modalImage.src = src;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('photoModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    function copyAccount(id) {
+      const text = document.getElementById(id).innerText.trim();
+
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          alert('계좌번호가 복사되었습니다.');
+        })
+        .catch(() => {
+          alert('복사에 실패했습니다.');
+        });
+    }
+
+    function submitRSVP(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('guestName').value;
+      const attendance = document.getElementById('attendance').value;
+      const count = document.getElementById('guestCount').value;
+
+      alert(
+        `참석 여부가 전달되었습니다.\n\n성함: ${name}\n참석 여부: ${attendance}\n참석 인원: ${count}명`
+      );
+
+      event.target.reset();
+    }
+  </script>
+</body>
+</html>
